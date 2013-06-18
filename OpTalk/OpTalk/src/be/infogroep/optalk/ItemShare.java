@@ -44,13 +44,18 @@ public class ItemShare {
 
 		Map<Enchantment, Integer> enchants = item_.getEnchantments();
 		int EnchantsSize = enchants.size();
-		
-//		Recipe R = ShapedRecipe(item_);
 
-		String[] message = new String[header + EnchantsSize];
-		message[0] = "§5" + sender.getName() + ":§6shared an item";
-		message[1] = "§aItem name: §6" + itemName_;
-		message[2] = "§aType: " + item_.getType().name();
+		// Recipe R = ShapedRecipe(item_);
+
+		int EnchantsHeaderSize = 1;
+		if (EnchantsSize > 0)
+			EnchantsHeaderSize = EnchantsSize;
+
+		String[] message = new String[header + EnchantsHeaderSize];
+		message[0] = "§5" + sender.getName() + ": §6shared an item";
+		message[1] = "§aItem name: §b"
+				+ itemName_.replace("_", " ").toLowerCase();
+		message[2] = "§aType: §b" + item_.getType().name();
 		message[3] = "§aEnchanments: ";
 
 		int index = 4;
@@ -68,12 +73,18 @@ public class ItemShare {
 		}
 
 		if (null == receiver_) {
-			for (String s : message) {
-				Bukkit.getServer().broadcastMessage(s);
+			if (msg.length == 0) {
+				Bukkit.getServer().broadcastMessage("§a§nPublicly shared item");
+				for (String s : message) {
+					Bukkit.getServer().broadcastMessage(s);
+				}
+
+			} else {
+				sender.sendMessage("§ccould not find player: " + msg[0]);
 			}
 		} else {
 			receiver_.sendMessage(message);
-			receiver_.openWorkbench(null, true);
+			sender.sendMessage("§asuccesfully shared your item with " + msg[0]);
 		}
 	}
 }

@@ -1,6 +1,6 @@
 name: OpTalk
 main: be.infogroep.optalk.optalk
-version: 0.2.14
+version: 0.2.20
 author: spartam
 
 commands:
@@ -16,6 +16,6 @@ commands:
     permission: OpTalk.item
     permission-message: Nuhu, what do you think you're doing?
   
-  permissions:
-    OpTalk.item:
-      default: true
+permissions:
+  OpTalk.item:
+    default: true
