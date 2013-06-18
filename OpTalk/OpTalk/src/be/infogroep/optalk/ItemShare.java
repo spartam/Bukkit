@@ -45,11 +45,11 @@ public class ItemShare {
 		Map<Enchantment, Integer> enchants = item_.getEnchantments();
 		int EnchantsSize = enchants.size();
 		
-		Recipe R = ShapedRecipe(item_);
+//		Recipe R = ShapedRecipe(item_);
 
 		String[] message = new String[header + EnchantsSize];
-		message[0] = "§5" + sender.getName() + ": §6 shared an item";
-		message[1] = "§aItem name: " + itemName_;
+		message[0] = "§5" + sender.getName() + ":§6shared an item";
+		message[1] = "§aItem name: §6" + itemName_;
 		message[2] = "§aType: " + item_.getType().name();
 		message[3] = "§aEnchanments: ";
 
