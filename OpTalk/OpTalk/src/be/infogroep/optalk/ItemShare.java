@@ -5,6 +5,7 @@ package be.infogroep.optalk;
 import java.util.Map;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -40,10 +41,21 @@ public class ItemShare {
 			else
 				itemName_ = item_.getType().name();
 		} else
-			itemName_ = item_.getType().name();
+			itemName_ = // item_.getType().name();
+			item_.getData().getClass().getName();
 
 		Map<Enchantment, Integer> enchants = item_.getEnchantments();
 		int EnchantsSize = enchants.size();
+
+		Material material_ = item_.getType();
+
+		if (material_.getId() == 387) { // special case book
+			itemName_ = "Special Case Book!";
+
+			BookMeta BM = (BookMeta) meta_;
+			itemName_ = BM.getTitle() + " - " + BM.getAuthor();
+
+		}
 
 		// Recipe R = ShapedRecipe(item_);
 
@@ -53,9 +65,9 @@ public class ItemShare {
 
 		String[] message = new String[header + EnchantsHeaderSize];
 		message[0] = "§5" + sender.getName() + ": §6shared an item";
-		message[1] = "§aItem name: §b"
-				+ itemName_.replace("_", " ").toLowerCase();
-		message[2] = "§aType: §b" + item_.getType().name();
+		message[1] = "§aItem name: §b" + itemName_;
+		message[2] = "§aType: §b"
+				+ material_.name().replace("_", " ").toLowerCase();
 		message[3] = "§aEnchanments: ";
 
 		int index = 4;
