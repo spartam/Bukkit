@@ -45,20 +45,23 @@ public class ItemShare {
 			item_.getData().getClass().getName();
 
 		Map<Enchantment, Integer> enchants = item_.getEnchantments();
-		int EnchantsSize = enchants.size();
 
 		Material material_ = item_.getType();
 
 		if (material_.getId() == 387) { // special case book
-			itemName_ = "Special Case Book!";
-
 			BookMeta BM = (BookMeta) meta_;
 			itemName_ = BM.getTitle() + " - " + BM.getAuthor();
 
 		}
+		if (material_.getId() == 403){// special case enchanted book
+			EnchantmentStorageMeta ESM = (EnchantmentStorageMeta) meta_;
+			enchants = ESM.getStoredEnchants();
+		}
 
 		// Recipe R = ShapedRecipe(item_);
 
+		int EnchantsSize = enchants.size();
+		
 		int EnchantsHeaderSize = 1;
 		if (EnchantsSize > 0)
 			EnchantsHeaderSize = EnchantsSize;
