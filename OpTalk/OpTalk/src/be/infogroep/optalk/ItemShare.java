@@ -74,7 +74,7 @@ public class ItemShare {
 
 		int EnchantsSize = enchants.size();
 
-		int EnchantsHeaderSize = 1;
+		int EnchantsHeaderSize = 0;
 		if (EnchantsSize > 0)
 			EnchantsHeaderSize = EnchantsSize;
 		else if (effects != null) {
