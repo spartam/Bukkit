@@ -63,6 +63,7 @@ public class ItemShare {
 		}
 
 		if (material_.getId() == 373) {// special case potions
+			potion = true;
 			PotionMeta PM = (PotionMeta) meta_;
 //			if (PM.hasDisplayName())
 //				itemName_ = PM.getDisplayName();
