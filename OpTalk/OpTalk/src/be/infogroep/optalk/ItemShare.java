@@ -11,6 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.material.Wool;
 import org.bukkit.potion.*;
 
 public class ItemShare {
@@ -23,6 +24,7 @@ public class ItemShare {
 	private ItemStack item_;
 	private ItemMeta meta_;
 	private String itemName_;
+	private String itemType_;
 
 	ItemShare(CommandSender sender, String[] msg) {
 		Bukkit.getLogger().info("ItemShare");
@@ -37,20 +39,12 @@ public class ItemShare {
 
 		meta_ = item_.getItemMeta();
 
-		if (meta_ != null) {
-			if (meta_.hasDisplayName())
-				itemName_ = meta_.getDisplayName();
-			else
-				itemName_ = item_.getType().name();
-		} else
-			itemName_ = // item_.getType().name();
-			item_.getData().getClass().getName();
-
 		Map<Enchantment, Integer> enchants = /* item_.getEnchantments(); */
 		item_.getEnchantments();
 		Collection<PotionEffect> effects = null;
 
 		Material material_ = item_.getType();
+		itemType_ = material_.name().replace("_", " ").toLowerCase();
 
 		if (material_.getId() == 387) {// special case book
 			BookMeta BM = (BookMeta) meta_;
@@ -69,11 +63,15 @@ public class ItemShare {
 				itemName_ = PM.getDisplayName();
 			Potion P = new Potion(item_.getDurability());
 			effects = P.getEffects();
-			if(P.isSplash()){
+			if (P.isSplash()) {
 				itemName_ = "Splash: " + itemName_;
 			}
 		}
 
+		if (material_.getId() == 35) {
+			Wool W = new Wool(item_.getDurability());
+			itemType_ = W.getColor() + itemType_;
+		}
 		// Recipe R = ShapedRecipe(item_);
 
 		int EnchantsSize = enchants.size();
@@ -86,11 +84,20 @@ public class ItemShare {
 				EnchantsHeaderSize = effects.size();
 		}
 
+		if (meta_ != null) {
+			if (meta_.hasDisplayName())
+				itemName_ = meta_.getDisplayName();
+			else
+				itemName_ = item_.getType().name();
+		} else
+			itemName_ = // item_.getType().name();
+			item_.getData().getClass().getName();
+
 		String[] message = new String[header + EnchantsHeaderSize];
 		message[0] = "§5" + sender.getName() + ": §6shared an item";
 		message[1] = "§aItem name: §b" + itemName_;
 		message[2] = "§aType: §b"
-				+ material_.name().replace("_", " ").toLowerCase();
+				+ itemType_;
 		if (potion)
 			message[3] = "§aEffect: ";
 		else
@@ -113,8 +120,11 @@ public class ItemShare {
 					int seconds = time / 20;
 					int minutes = seconds / 60;
 					seconds = seconds - (minutes * 60);
-					message[index] = type + ": "
-							+ minutes + ":" + seconds;
+					message[index] = type
+							+ ": "
+							+ ((new Potion(item_.getDurability())
+									.hasExtendedDuration()) ? "EXTENDED"
+									: "NORMAL");
 					index = index + 1;
 				}
 			} else {
@@ -127,9 +137,9 @@ public class ItemShare {
 		}
 		message[index] = "§a-------------------";
 
-		//Bukkit.getServer().broadcastMessage(
-		//		String.valueOf(item_.getDurability()));
-		
+		// Bukkit.getServer().broadcastMessage(
+		// String.valueOf(item_.getDurability()));
+
 		if (null == receiver_) {
 			if (msg.length == 0) {
 				Bukkit.getServer().broadcastMessage("§a§nPublicly shared item");
