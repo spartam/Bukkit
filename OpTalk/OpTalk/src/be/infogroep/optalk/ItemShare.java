@@ -11,6 +11,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
+//import org.bukkit.material.MaterialData;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.*;
 
@@ -68,9 +69,9 @@ public class ItemShare {
 			}
 		}
 
-		if (material_.getId() == 35) {
-			Wool W = new Wool(item_.getDurability());
-			itemType_ = W.getColor() + itemType_;
+		if (material_.getId() == 35) {//special case wool
+			Wool W = new Wool(item_.getType(), item_.getData().getData());
+			itemType_ = W.getColor().name().toLowerCase() + " " + itemType_;
 		}
 		// Recipe R = ShapedRecipe(item_);
 
@@ -122,7 +123,7 @@ public class ItemShare {
 					seconds = seconds - (minutes * 60);
 					message[index] = type
 							+ ": "
-							+ ((new Potion(item_.getDurability())
+							+ ((new Potion(item_.getData().getData())
 									.hasExtendedDuration()) ? "EXTENDED"
 									: "NORMAL");
 					index = index + 1;
@@ -135,7 +136,7 @@ public class ItemShare {
 			message[index] = "None";
 			index = index + 1;
 		}
-		message[index] = "§a-------------------";
+		message[index] = "§a-----------------";
 
 		// Bukkit.getServer().broadcastMessage(
 		// String.valueOf(item_.getDurability()));
