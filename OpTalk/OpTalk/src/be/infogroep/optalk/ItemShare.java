@@ -74,7 +74,7 @@ public class ItemShare {
 
 		int EnchantsSize = enchants.size();
 
-		int EnchantsHeaderSize = 0;
+		int EnchantsHeaderSize = 1;
 		if (EnchantsSize > 0)
 			EnchantsHeaderSize = EnchantsSize;
 		else if (effects != null) {
@@ -101,9 +101,11 @@ public class ItemShare {
 						+ current.getValue();
 				index = index + 1;
 			}
-		} else if (effects != null)
+		} else if (effects != null) {
 			if (!effects.isEmpty()) {
 				for (PotionEffect P : effects) {
+					Bukkit.getLogger().info(
+							P.getType().getName() + ": " + P.getDuration());
 					message[index] = P.getType().getName() + ": "
 							+ P.getDuration();
 				}
@@ -111,6 +113,10 @@ public class ItemShare {
 				message[index] = "None";
 				index = index + 1;
 			}
+		} else {
+			message[index] = "None";
+			index = index + 1;
+		}
 		message[index] = "§a-------------------";
 
 		if (null == receiver_) {
