@@ -34,7 +34,6 @@ public class ItemShare {
 
 		sender_ = (Player) sender;
 		item_ = sender_.getItemInHand();
-		
 
 		meta_ = item_.getItemMeta();
 
@@ -47,8 +46,8 @@ public class ItemShare {
 			itemName_ = // item_.getType().name();
 			item_.getData().getClass().getName();
 
-		Map<Enchantment, Integer> enchants = /*item_.getEnchantments();*/
-				item_.getEnchantments();
+		Map<Enchantment, Integer> enchants = /* item_.getEnchantments(); */
+		item_.getEnchantments();
 		Collection<PotionEffect> effects = null;
 
 		Material material_ = item_.getType();
@@ -68,7 +67,7 @@ public class ItemShare {
 			PotionMeta PM = (PotionMeta) meta_;
 			if (PM.hasDisplayName())
 				itemName_ = PM.getDisplayName();
-			 effects = PM.getCustomEffects();
+			effects = PM.getCustomEffects();
 		}
 
 		// Recipe R = ShapedRecipe(item_);
@@ -78,8 +77,10 @@ public class ItemShare {
 		int EnchantsHeaderSize = 1;
 		if (EnchantsSize > 0)
 			EnchantsHeaderSize = EnchantsSize;
-		else if (effects.size() != 0)
-			EnchantsHeaderSize = effects.size();
+		else if (effects != null) {
+			if (effects.size() != 0)
+				EnchantsHeaderSize = effects.size();
+		}
 
 		String[] message = new String[header + EnchantsHeaderSize];
 		message[0] = "§5" + sender.getName() + ": §6shared an item";
