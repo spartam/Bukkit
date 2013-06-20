@@ -1,6 +1,6 @@
 name: OpTalk
 main: be.infogroep.optalk.optalk
-version: 0.3.10
+version: 0.3.13
 author: spartam
 
 commands:

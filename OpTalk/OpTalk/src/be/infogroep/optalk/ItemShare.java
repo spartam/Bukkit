@@ -13,10 +13,9 @@ import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.*;
 
-
 public class ItemShare {
 
-	private int header = 4;
+	private int header = 5;
 	private boolean potion = false;
 
 	private Player receiver_ = null;
@@ -35,6 +34,7 @@ public class ItemShare {
 
 		sender_ = (Player) sender;
 		item_ = sender_.getItemInHand();
+		
 
 		meta_ = item_.getItemMeta();
 
@@ -47,7 +47,8 @@ public class ItemShare {
 			itemName_ = // item_.getType().name();
 			item_.getData().getClass().getName();
 
-		Map<Enchantment, Integer> enchants = item_.getEnchantments();
+		Map<Enchantment, Integer> enchants = /*item_.getEnchantments();*/
+				item_.getEnchantments();
 		Collection<PotionEffect> effects = null;
 
 		Material material_ = item_.getType();
@@ -65,12 +66,9 @@ public class ItemShare {
 		if (material_.getId() == 373) {// special case potions
 			potion = true;
 			PotionMeta PM = (PotionMeta) meta_;
-//			if (PM.hasDisplayName())
-//				itemName_ = PM.getDisplayName();
-//			effects = PM.getCustomEffects();
-		Potion p = (Potion) PM;
-		effects = p.getEffects();
-
+			if (PM.hasDisplayName())
+				itemName_ = PM.getDisplayName();
+			 effects = PM.getCustomEffects();
 		}
 
 		// Recipe R = ShapedRecipe(item_);
@@ -103,13 +101,14 @@ public class ItemShare {
 				index = index + 1;
 			}
 		} else if (!effects.isEmpty()) {
-			for(PotionEffect P: effects){
+			for (PotionEffect P : effects) {
 				message[index] = P.getType().getName() + ": " + P.getDuration();
 			}
 		} else {
 			message[index] = "None";
 			index = index + 1;
 		}
+		message[index] = "§a-------------------";
 
 		if (null == receiver_) {
 			if (msg.length == 0) {
