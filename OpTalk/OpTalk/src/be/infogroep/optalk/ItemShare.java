@@ -48,7 +48,7 @@ public class ItemShare {
 
 		Material material_ = item_.getType();
 
-		if (material_.getId() == 387) { // special case book
+		if (material_.getId() == 387) {// special case book
 			BookMeta BM = (BookMeta) meta_;
 			itemName_ = BM.getTitle() + " - " + BM.getAuthor();
 
@@ -56,6 +56,11 @@ public class ItemShare {
 		if (material_.getId() == 403){// special case enchanted book
 			EnchantmentStorageMeta ESM = (EnchantmentStorageMeta) meta_;
 			enchants = ESM.getStoredEnchants();
+		}
+		
+		if(material_.getId() == 373){// special case potions
+			PotionMeta PM = (PotionMeta) meta_;
+			if (PM.hasDisplayName()) itemName_ = PM.getDisplayName();
 		}
 
 		// Recipe R = ShapedRecipe(item_);
