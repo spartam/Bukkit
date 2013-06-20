@@ -101,14 +101,16 @@ public class ItemShare {
 						+ current.getValue();
 				index = index + 1;
 			}
-		} else if (!effects.isEmpty()) {
-			for (PotionEffect P : effects) {
-				message[index] = P.getType().getName() + ": " + P.getDuration();
+		} else if (effects != null)
+			if (!effects.isEmpty()) {
+				for (PotionEffect P : effects) {
+					message[index] = P.getType().getName() + ": "
+							+ P.getDuration();
+				}
+			} else {
+				message[index] = "None";
+				index = index + 1;
 			}
-		} else {
-			message[index] = "None";
-			index = index + 1;
-		}
 		message[index] = "§a-------------------";
 
 		if (null == receiver_) {
