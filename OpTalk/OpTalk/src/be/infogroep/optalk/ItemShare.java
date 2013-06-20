@@ -12,7 +12,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.*;
 //import org.bukkit.material.MaterialData;
-import org.bukkit.material.Wool;
+import org.bukkit.material.*;
 import org.bukkit.potion.*;
 
 public class ItemShare {
@@ -72,6 +72,11 @@ public class ItemShare {
 		if (material_.getId() == 35) {//special case wool
 			Wool W = new Wool(item_.getType(), item_.getData().getData());
 			itemType_ = W.getColor().name().toLowerCase() + " " + itemType_;
+		}
+		
+		if (material_.getId() == 351){//special case dye
+			Dye D = new Dye(item_.getType(), item_.getData().getData());
+			itemType_ = D.getColor().name().toLowerCase() + " dye";
 		}
 		// Recipe R = ShapedRecipe(item_);
 
