@@ -67,7 +67,11 @@ public class ItemShare {
 			PotionMeta PM = (PotionMeta) meta_;
 			if (PM.hasDisplayName())
 				itemName_ = PM.getDisplayName();
-			effects = PM.getCustomEffects();
+			Potion P = new Potion(item_.getDurability());
+			effects = P.getEffects();
+			if(P.isSplash()){
+				itemName_ = "Splash: " + itemName_;
+			}
 		}
 
 		// Recipe R = ShapedRecipe(item_);
@@ -104,10 +108,14 @@ public class ItemShare {
 		} else if (effects != null) {
 			if (!effects.isEmpty()) {
 				for (PotionEffect P : effects) {
-					Bukkit.getLogger().info(
-							P.getType().getName() + ": " + P.getDuration());
-					message[index] = P.getType().getName() + ": "
-							+ P.getDuration();
+					String type = P.getType().getName();
+					int time = P.getDuration();
+					int seconds = time / 20;
+					int minutes = seconds / 60;
+					seconds = seconds - (minutes * 60);
+					message[index] = type + ": "
+							+ minutes + ":" + seconds;
+					index = index + 1;
 				}
 			} else {
 				message[index] = "None";
@@ -119,6 +127,9 @@ public class ItemShare {
 		}
 		message[index] = "§a-------------------";
 
+		//Bukkit.getServer().broadcastMessage(
+		//		String.valueOf(item_.getDurability()));
+		
 		if (null == receiver_) {
 			if (msg.length == 0) {
 				Bukkit.getServer().broadcastMessage("§a§nPublicly shared item");
