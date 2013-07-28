@@ -1,0 +1,15 @@
+name: ItemShare
+main: be.infogroep.ItemShare.ItemShare
+version: 0.1.0
+author: spartam
+
+commands:
+  item:
+    description: Show the item in your hand
+    usage: /item [player]
+    permission: ItemShare.item
+    permission-message: Nuhu, what do you think you're doing?
+  
+permissions:
+  ItemShare.item:
+    default: true
