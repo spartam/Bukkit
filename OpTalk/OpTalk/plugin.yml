@@ -9,12 +9,6 @@ commands:
     usage: /o <message>
     permission: OpTalk.o
     permission-message: How do you even know I exist?
-    
-  item:
-    description: Show the item in your hand
-    usage: /item [player]
-    permission: OpTalk.item
-    permission-message: Nuhu, what do you think you're doing?
   
 permissions:
   OpTalk.item:

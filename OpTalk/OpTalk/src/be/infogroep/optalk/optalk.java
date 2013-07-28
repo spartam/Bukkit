@@ -18,12 +18,6 @@ public class optalk extends JavaPlugin{
 			// execute whisper all ops
 			return true;
 		}
-		else if(cmd.getName().equalsIgnoreCase("item")){
-			
-			new ItemShare(sender, args);
-			
-			return true;
-		}
 		else	
 			return false;
 	
