@@ -8,6 +8,10 @@ public class InfoManager extends JavaPlugin{
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args){
 		
+		if (cmd.getName().equalsIgnoreCase("infomanager")){
+			
+		}
+		
 		return true;
 	}
 	
