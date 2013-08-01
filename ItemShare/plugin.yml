@@ -1,7 +1,8 @@
 name: ItemShare
 main: be.infogroep.ItemShare.ItemShare
-version: 0.1.0
+version: 1.3.6
 author: spartam
+softdepend: [EnchantmentAPI]
 
 commands:
   item:

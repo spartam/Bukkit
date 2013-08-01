@@ -18,7 +18,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 public class ShowItem {
-	
+
 	private int header = 5;
 	private boolean potion = false;
 
@@ -28,9 +28,10 @@ public class ShowItem {
 	private ItemMeta meta_;
 	private String itemName_;
 	private String itemType_;
+	private EnchantementHandler EH;
 
-	ShowItem(CommandSender sender, String[] msg) {
-		Bukkit.getLogger().info("ShowItem");
+	ShowItem(CommandSender sender, String[] msg, Boolean EnchantmentAPIEnabled) {
+		Bukkit.getLogger().info("ShowItem constructor");
 
 		if (msg.length > 0) {
 			String name = msg[0];
@@ -42,8 +43,7 @@ public class ShowItem {
 
 		meta_ = item_.getItemMeta();
 
-		Map<Enchantment, Integer> enchants = /* item_.getEnchantments(); */
-		item_.getEnchantments();
+		Map<Enchantment, Integer> enchants = null;
 		Collection<PotionEffect> effects = null;
 
 		Material material_ = item_.getType();
@@ -71,18 +71,24 @@ public class ShowItem {
 			}
 		}
 
-		if (material_.getId() == 35) {//special case wool
+		if (material_.getId() == 35) {// special case wool
 			Wool W = new Wool(item_.getType(), item_.getData().getData());
 			itemType_ = W.getColor().name().toLowerCase() + " " + itemType_;
 		}
-		
-		if (material_.getId() == 351){//special case dye
+
+		if (material_.getId() == 351) {// special case dye
 			Dye D = new Dye(item_.getType(), item_.getData().getData());
 			itemType_ = D.getColor().name().toLowerCase() + " dye";
 		}
 		// Recipe R = ShapedRecipe(item_);
 
-		int EnchantsSize = enchants.size();
+		int EnchantsSize = 0;
+		if (enchants != null) {
+			Bukkit.getLogger().info("Enchants was not null");
+			EnchantsSize = enchants.size();
+		}
+		else Bukkit.getLogger().info("Enchants was null");
+			
 
 		int EnchantsHeaderSize = 1;
 		if (EnchantsSize > 0)
@@ -90,6 +96,12 @@ public class ShowItem {
 		else if (effects != null) {
 			if (effects.size() != 0)
 				EnchantsHeaderSize = effects.size();
+		} else {
+			EH = new EnchantementHandler(item_, EnchantmentAPIEnabled);
+			if (EH.Size() > 0) {
+				EnchantsSize = EH.Size();
+				EnchantsHeaderSize = EnchantsSize;
+			}
 		}
 
 		if (meta_ != null) {
@@ -101,11 +113,12 @@ public class ShowItem {
 			itemName_ = // item_.getType().name();
 			item_.getData().getClass().getName();
 
+		Bukkit.getLogger().info("Starting to create message");
+		
 		String[] message = new String[header + EnchantsHeaderSize];
 		message[0] = "§5" + sender.getName() + ": §6shared an item";
 		message[1] = "§aItem name: §b" + itemName_;
-		message[2] = "§aType: §b"
-				+ itemType_;
+		message[2] = "§aType: §b" + itemType_;
 		if (potion)
 			message[3] = "§aEffect: ";
 		else
@@ -115,11 +128,22 @@ public class ShowItem {
 
 		if (EnchantsSize > 0) {
 
-			for (Map.Entry<Enchantment, Integer> current : enchants.entrySet()) {
-				message[index] = current.getKey().getName() + " Level: "
-						+ current.getValue();
-				index = index + 1;
+			if (EH != null) {
+				Bukkit.getLogger().info("Found EnchantementHandler");
+				for (String CurrentLine : EH.ToStringArray()) {
+					message[index] = CurrentLine;
+					index = index + 1;
+				}
+			} else {
+				Bukkit.getLogger().info("No EnchantementHandler");
+				for (Map.Entry<Enchantment, Integer> current : enchants
+						.entrySet()) {
+					message[index] = current.getKey().getName() + " Level: "
+							+ current.getValue();
+					index = index + 1;
+				}
 			}
+
 		} else if (effects != null) {
 			if (!effects.isEmpty()) {
 				for (PotionEffect P : effects) {
