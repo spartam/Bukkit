@@ -29,14 +29,19 @@ public class ShowItem {
 	private String itemName_;
 	private String itemType_;
 	private EnchantementHandler EH;
+	
+	private LoggingClass LC = null;
 
 	ShowItem(CommandSender sender, String[] msg, Boolean EnchantmentAPIEnabled) {
-		Bukkit.getLogger().info("ShowItem constructor");
+		
+		LC = new LoggingClass("ShowItem");
+		
+		LC.Log("Constructor");
 		
 		if(EnchantmentAPIEnabled)
-			Bukkit.getLogger().info("EnchantementAPI is enabled");
+			LC.Log("EnchantementAPI is enabled");
 		else
-			Bukkit.getLogger().info("EnchantementAPI is disabled");
+			LC.Log("EnchantementAPI is disabled");
 
 		if (msg.length > 0) {
 			String name = msg[0];
@@ -55,7 +60,7 @@ public class ShowItem {
 		Material material_ = item_.getType();
 		itemType_ = material_.name().replace("_", " ").toLowerCase();
 		
-		Bukkit.getLogger().info("ID: " + material_.getId());
+		LC.Log("ID: " + material_.getId());
 
 		if (material_.getId() == 387) {// special case book
 			BookMeta BM = (BookMeta) meta_;
@@ -89,15 +94,15 @@ public class ShowItem {
 			itemType_ = D.getColor().name().toLowerCase() + " dye";
 		}
 		// Recipe R = ShapedRecipe(item_);
-		Bukkit.getLogger().info("Handeled special case materials");
+		LC.Log("Handeled special case materials");
 		
 		
 		int EnchantsSize = 0;
 		if (enchants != null) {
-			Bukkit.getLogger().info("Enchants was not null");
+			LC.Log("Enchants was not null");
 			EnchantsSize = enchants.size();
 		}
-		else Bukkit.getLogger().info("Enchants was null");
+		else LC.Log("Enchants were null");
 			
 
 		int EnchantsHeaderSize = 1;
@@ -123,7 +128,7 @@ public class ShowItem {
 			itemName_ = // item_.getType().name();
 			item_.getData().getClass().getName();
 
-		Bukkit.getLogger().info("Starting to create message");
+		LC.Log("Starting to create message");
 		
 		String[] message = new String[header + EnchantsHeaderSize];
 		message[0] = "§5" + sender.getName() + ": §6shared an item";
@@ -139,13 +144,13 @@ public class ShowItem {
 		if (EnchantsSize > 0) {
 
 			if (EH != null) {
-				Bukkit.getLogger().info("Found EnchantementHandler");
+				LC.Log("Found EnchantementHandler");
 				for (String CurrentLine : EH.ToStringArray()) {
 					message[index] = CurrentLine;
 					index = index + 1;
 				}
 			} else {
-				Bukkit.getLogger().info("No EnchantementHandler");
+				LC.Log("No EnchantementHandler");
 				for (Map.Entry<Enchantment, Integer> current : enchants
 						.entrySet()) {
 					message[index] = current.getKey().getName() + " Level: "

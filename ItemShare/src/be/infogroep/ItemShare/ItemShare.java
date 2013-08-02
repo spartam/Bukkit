@@ -15,6 +15,7 @@ public class ItemShare extends JavaPlugin {
 	static ConfigHandler ConfigHandler_ = null;
 	
 	
+	@Override
 	public void onLoad(){
 		Plugin EnchantmentAPI = Bukkit.getServer().getPluginManager().getPlugin("EnchantmentAPI");
 		if (EnchantmentAPI != null){
@@ -24,6 +25,7 @@ public class ItemShare extends JavaPlugin {
 		LC = new LoggingClass("main");
 	}
 	
+	@Override
 	public void onEnable(){
 		
 		try {
@@ -35,19 +37,20 @@ public class ItemShare extends JavaPlugin {
 		}
 		
 		if(EnchantmentAPI_){
-			LC.Log("Enchantment API has been enabled");
+			LC.Log("Enchantment API support has been enabled");
 		}
 		else{
-			LC.Log("Enchantment API has been disabled");
+			LC.Log("Enchantment API support has been disabled");
 		}
 		
 	}
 	
 
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label,
 			String[] args) {
 		
-		Bukkit.getLogger().info(sender.getName() + " executed " + cmd.getName());
+		LC.Log(sender.getName() + " executed " + cmd.getName());
 		
 
 		if (cmd.getName().equalsIgnoreCase("item")) {
