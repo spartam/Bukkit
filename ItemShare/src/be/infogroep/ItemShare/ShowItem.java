@@ -32,34 +32,42 @@ public class ShowItem {
 
 	ShowItem(CommandSender sender, String[] msg, Boolean EnchantmentAPIEnabled) {
 		Bukkit.getLogger().info("ShowItem constructor");
+		
+		if(EnchantmentAPIEnabled)
+			Bukkit.getLogger().info("EnchantementAPI is enabled");
+		else
+			Bukkit.getLogger().info("EnchantementAPI is disabled");
 
 		if (msg.length > 0) {
 			String name = msg[0];
 			receiver_ = Bukkit.getServer().getPlayer(name);
-		}
+			Bukkit.getLogger().info("Given name: " + name);
+		}else Bukkit.getLogger().info("Broadcast to all");
 
 		sender_ = (Player) sender;
 		item_ = sender_.getItemInHand();
 
 		meta_ = item_.getItemMeta();
-
+		
 		Map<Enchantment, Integer> enchants = null;
 		Collection<PotionEffect> effects = null;
 
 		Material material_ = item_.getType();
 		itemType_ = material_.name().replace("_", " ").toLowerCase();
+		
+		Bukkit.getLogger().info("ID: " + material_.getId());
 
 		if (material_.getId() == 387) {// special case book
 			BookMeta BM = (BookMeta) meta_;
 			itemName_ = BM.getTitle() + " - " + BM.getAuthor();
 
 		}
-		if (material_.getId() == 403) {// special case enchanted book
+		else if (material_.getId() == 403) {// special case enchanted book
 			EnchantmentStorageMeta ESM = (EnchantmentStorageMeta) meta_;
 			enchants = ESM.getStoredEnchants();
 		}
 
-		if (material_.getId() == 373) {// special case potions
+		else if (material_.getId() == 373) {// special case potions
 			potion = true;
 			PotionMeta PM = (PotionMeta) meta_;
 			if (PM.hasDisplayName())
@@ -71,7 +79,7 @@ public class ShowItem {
 			}
 		}
 
-		if (material_.getId() == 35) {// special case wool
+		else if (material_.getId() == 35) {// special case wool
 			Wool W = new Wool(item_.getType(), item_.getData().getData());
 			itemType_ = W.getColor().name().toLowerCase() + " " + itemType_;
 		}
@@ -81,7 +89,9 @@ public class ShowItem {
 			itemType_ = D.getColor().name().toLowerCase() + " dye";
 		}
 		// Recipe R = ShapedRecipe(item_);
-
+		Bukkit.getLogger().info("Handeled special case materials");
+		
+		
 		int EnchantsSize = 0;
 		if (enchants != null) {
 			Bukkit.getLogger().info("Enchants was not null");
