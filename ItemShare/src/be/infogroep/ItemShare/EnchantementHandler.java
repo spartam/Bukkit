@@ -31,7 +31,7 @@ public class EnchantementHandler {
 			LC.Log("with custom Enchants");
 
 			Map<CustomEnchantment, Integer> enchants = EnchantmentAPI
-					.getEnchantments(item_);
+					.getAllEnchantments(item_);
 
 			if (enchants.size() > 0) {
 				String[] Result = new String[enchants.size()];
@@ -39,8 +39,11 @@ public class EnchantementHandler {
 
 				for (Map.Entry<CustomEnchantment, Integer> current : enchants
 						.entrySet()) {
-					Result[count] = current.getKey().name() + " Level: "
-							+ current.getValue();
+					Result[count] = new EchantementConverter().Convert(current
+							.getKey().name())
+							+ " "
+							+ new IntegerToRomanConverter().Convert(current
+									.getValue());
 					count = count + 1;
 				}
 				message = Result;
